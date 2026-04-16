@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Speak & See</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      width: 350px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .speak-btn {
+      background: #4CAF50;
+      color: white;
+    }
+
+    .listen-btn {
+      background: #2196F3;
+      color: white;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    #output {
+      margin-top: 15px;
+      padding: 10px;
+      background: #f1f1f1;
+      border-radius: 10px;
+      min-height: 40px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>🤖 Speak & See</h2>
+
+    <!-- Speech to Text -->
+    <button class="listen-btn" onclick="startListening()">🎤 Speak</button>
+    <div id="output">Your speech will appear here...</div>
+
+    <!-- Text to Speech -->
+    <input id="textInput" placeholder="Type something..." />
+    <button class="speak-btn" onclick="speakText()">🔊 Read</button>
+  </div>
+
+<script>
+function startListening() {
+  const recognition = new webkitSpeechRecognition();
+  recognition.onresult = function(event) {
+    document.getElementById("output").innerText =
+      event.results[0][0].transcript;
+  };
+  recognition.start();
+}
+
+function speakText() {
+  const text = document.getElementById("textInput").value;
+  const speech = new SpeechSynthesisUtterance(text);
+
+  let voices = speechSynthesis.getVoices();
+  if (voices.length > 0) {
+    speech.voice = voices[0];
+  }
+
+  speechSynthesis.speak(speech);
+}
+
+speechSynthesis.onvoiceschanged = () => {
+  speechSynthesis.getVoices();
+};
+</script>
+
+</body>
+</html>
